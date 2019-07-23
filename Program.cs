@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Google.Cloud.Translation.V2;
+using System.Collections.Generic;
 
 namespace uisapp
 {
@@ -8,19 +9,22 @@ namespace uisapp
     {
         static void Main(string[] args)
         {
+            int paragraphSize = 7;
             string path = "file.txt";
             StreamWriter outputFile = new StreamWriter("output.txt");
-            string line = "";
+            string[] paragraph = new string[paragraphSize];
+            int count = 0;
             if (File.Exists(path))
             {
                 Console.WriteLine("----------PROGRAM START--------------");
                 using (StreamReader reader = new StreamReader(path))
                 {
-                    string currentLine;
+                    // TODO: Loop structure needs to be updated                    
+                    string currentLine;                
                     while ((currentLine = reader.ReadLine()) != null)
                     {
-                        line = Translate(currentLine).TranslatedText;
-                        outputFile.WriteLine(line);
+                        paragraph[count] = currentLine;                        
+                        count++;
                     }
                     outputFile.Close();
                     Console.WriteLine("----------PROGRAM END--------------");
@@ -31,7 +35,7 @@ namespace uisapp
                 throw new FileNotFoundException("ERROR: FILE NOT FOUND");
             }
         }
-        static TranslationResult Translate(string text)
+        static IList<TranslationResult> Translate(IEnumerable<string> text)
         {
             var client = TranslationClient.Create();
             return client.TranslateText(text, LanguageCodes.Spanish);
