@@ -22,7 +22,8 @@ namespace uisapp
                         line = Translate(currentLine).TranslatedText;
                         outputFile.WriteLine(line);
                     }
-                    outputFile.Close();                    
+                    outputFile.Close();
+                    Console.WriteLine("----------PROGRAM END--------------");
                 }
             }
             else
